@@ -4,6 +4,8 @@ using Godot.Collections;
 
 public partial class OptionGrid : VBoxContainer
 {
+    [Signal] public delegate void OptionChangedEventHandler(string key, Variant value);
+
     [Export]
     public Dictionary<string, OptionMetadata> OptionsMetadata = new()
     {
@@ -55,6 +57,8 @@ public partial class OptionGrid : VBoxContainer
     private void SetOptionValue(string key, Variant value)
     {
         GameOptions.Current[key] = value;
+        EmitSignal(SignalName.OptionChanged, key, value);
+        Logger.Log($"Option '{key}' set to {value}.", "OptionsGrid", Logger.LogTypeEnum.UI);
     }
 
     public override void _ExitTree()
