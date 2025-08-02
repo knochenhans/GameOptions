@@ -49,7 +49,7 @@ public partial class OptionGrid : VBoxContainer
             return;
         }
 
-        MenuBuilder.BuildMenu(gridContainer, GameOptions.Current.Values, OptionsMetadata, OptionOrder, GameOptions.DropDownOptions, SetOptionValue);
+        MenuBuilder.BuildMenu(gridContainer, GameOptions.Current.Values, OptionsMetadata, OptionOrder, GameOptionMetadata.DropDownOptions, SetOptionValue);
 
         AddChild(gridContainer);
     }
