@@ -14,8 +14,7 @@ public partial class OptionGrid : VBoxContainer
         { "resolution", new OptionMetadata { DisplayName = "Resolution", DisplayType = OptionDisplayType.DropDown } }
     };
 
-    [Export]
-    public Array<string> OptionOrder = [];
+    [Export] public Array<string> OptionOrder = [];
 
     public override void _Ready()
     {
