@@ -3,8 +3,17 @@ using Godot.Collections;
 
 public class OptionsData
 {
-    public Dictionary<string, Variant> Values { get; private set; }
+    public Dictionary<string, Variant> Values { get; protected set; } = [];
     public Array<string> Keys => [.. Values.Keys];
+
+    public virtual void InitializeDefaults()
+    {
+        Set("master_volume", 1.0f);
+        Set("music_volume", 0.8f);
+        Set("sfx_volume", 0.8f);
+        Set("fullscreen", false);
+        Set("resolution", 0); // Index of dropdown
+    }
 
     public OptionsData()
     {
@@ -29,19 +38,12 @@ public class OptionsData
             : defaultValue;
     }
 
-    public void Set(string key, Variant value)
-    {
-        Values[key] = value;
-    }
+    public void Set(string key, Variant value) => Values[key] = value;
 
     public static OptionsData CreateDefault()
     {
         var data = new OptionsData();
-        data.Set("master_volume", 1.0f);
-        data.Set("music_volume", 0.8f);
-        data.Set("sfx_volume", 0.8f);
-        data.Set("fullscreen", false);
-        data.Set("resolution", 0); // Index of dropdown
+        data.InitializeDefaults();
         return data;
     }
 }
