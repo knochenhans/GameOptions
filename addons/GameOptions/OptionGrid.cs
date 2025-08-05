@@ -4,8 +4,6 @@ using Godot.Collections;
 
 public partial class OptionGrid : VBoxContainer
 {
-    [Signal] public delegate void OptionChangedEventHandler(string key, Variant value);
-
     [Export]
     public Dictionary<string, OptionMetadata> OptionsMetadata = new()
     {
@@ -18,9 +16,15 @@ public partial class OptionGrid : VBoxContainer
 
     [Export] public Array<string> OptionOrder = [];
 
-    public override void _Ready()
+    UISoundPlayer UISoundPlayer;
+
+    GridContainer GridContainer;
+
+    public void Init(UISoundPlayer UISoundPlayer)
     {
-        var gridContainer = new GridContainer
+        this.UISoundPlayer = UISoundPlayer;
+
+        GridContainer = new GridContainer
         {
             Name = "GridContainer",
             Columns = 2,
@@ -49,20 +53,39 @@ public partial class OptionGrid : VBoxContainer
             return;
         }
 
-        MenuBuilder.BuildMenu(gridContainer, GameOptions.Current.Values, OptionsMetadata, OptionOrder, GameOptionMetadata.DropDownOptions, SetOptionValue);
+        MenuBuilder.BuildMenu(GridContainer, GameOptions.Current.Values, OptionsMetadata, OptionOrder, GameOptionMetadata.DropDownOptions, SetOptionValue, OnMousePressedItem, OnMouseEnteredItem);
 
-        AddChild(gridContainer);
+        AddChild(GridContainer);
+    }
+
+    public void Clear()
+    {
+        foreach (Node child in GetChildren())
+        {
+            if (child is GridContainer)
+            {
+                RemoveChild(child);
+                child.QueueFree();
+            }
+        }
+        GameOptions.Save();
     }
 
     private void SetOptionValue(string key, Variant value)
     {
         GameOptions.Current[key] = value;
-        EmitSignal(SignalName.OptionChanged, key, value);
         Logger.Log($"Option '{key}' set to {value}.", "OptionsGrid", Logger.LogTypeEnum.UI);
     }
 
-    public override void _ExitTree()
+    public override void _ExitTree() => Clear();
+
+    public void OnMousePressedItem(string key) => UISoundPlayer.PlaySound("click1");
+    public void OnMouseEnteredItem(string key) => UISoundPlayer.PlaySound("hover");
+
+    public void DisableInput()
     {
-        GameOptions.Save();
+        foreach (Node child in GridContainer.GetChildren())
+            if (child is Control control)
+                control.SetBlockSignals(true);
     }
 }

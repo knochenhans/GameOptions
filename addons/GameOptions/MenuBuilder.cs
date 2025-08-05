@@ -4,7 +4,7 @@ using Godot.Collections;
 
 public static class MenuBuilder
 {
-    public static void BuildMenu(GridContainer gridContainer, Dictionary<string, Variant> options, Dictionary<string, OptionMetadata> metadataDict, Array<string> optionOrder, Dictionary<string, Array<string>> dropDownOptions, Action<string, Variant> setValue)
+    public static void BuildMenu(GridContainer gridContainer, Dictionary<string, Variant> options, Dictionary<string, OptionMetadata> metadataDict, Array<string> optionOrder, Dictionary<string, Array<string>> dropDownOptions, Action<string, Variant> setValue, Action<string> onMousePressed = null, Action<string> onMouseEntered = null)
     {
         foreach (var key in optionOrder)
         {
@@ -35,6 +35,10 @@ public static class MenuBuilder
                             SizeFlagsVertical = Control.SizeFlags.ExpandFill,
                         };
                         slider.ValueChanged += v => setValue(key, (float)v);
+                        if (onMousePressed != null)
+                            slider.GuiInput += @event => { if (@event is InputEventMouseButton btn && btn.Pressed) onMousePressed(key); };
+                        if (onMouseEntered != null)
+                            slider.MouseEntered += () => onMouseEntered(key);
                         control = slider;
                     }
                     break;
@@ -51,6 +55,10 @@ public static class MenuBuilder
                         SizeFlagsVertical = Control.SizeFlags.ExpandFill,
                     };
                     spinBox.ValueChanged += v => setValue(key, (int)v);
+                    if (onMousePressed != null)
+                        spinBox.GuiInput += @event => { if (@event is InputEventMouseButton btn && btn.Pressed) onMousePressed(key); };
+                    if (onMouseEntered != null)
+                        spinBox.MouseEntered += () => onMouseEntered(key);
                     control = spinBox;
                     break;
                 case OptionDisplayType.CheckBox:
@@ -61,6 +69,10 @@ public static class MenuBuilder
                         Name = $"{key}CheckBox"
                     };
                     checkBox.Toggled += pressed => setValue(key, pressed);
+                    if (onMousePressed != null)
+                        checkBox.GuiInput += @event => { if (@event is InputEventMouseButton btn && btn.Pressed) onMousePressed(key); };
+                    if (onMouseEntered != null)
+                        checkBox.MouseEntered += () => onMouseEntered(key);
                     control = checkBox;
                     break;
                 case OptionDisplayType.DropDown:
@@ -78,6 +90,10 @@ public static class MenuBuilder
 
                     dropDown.Selected = selectedIndex;
                     dropDown.ItemSelected += index => setValue(key, index);
+                    if (onMousePressed != null)
+                        dropDown.GuiInput += @event => { if (@event is InputEventMouseButton btn && btn.Pressed) onMousePressed(key); };
+                    if (onMouseEntered != null)
+                        dropDown.MouseEntered += () => onMouseEntered(key);
                     control = dropDown;
                     break;
                 default:

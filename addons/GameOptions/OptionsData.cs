@@ -1,8 +1,10 @@
 using Godot;
 using Godot.Collections;
 
-public class OptionsData
+public partial class OptionsData : Resource
 {
+    [Signal] public delegate void OptionChangedEventHandler(string key, Variant value);
+
     public Dictionary<string, Variant> Values { get; protected set; } = [];
     public Array<string> Keys => [.. Values.Keys];
 
@@ -28,7 +30,11 @@ public class OptionsData
     public Variant this[string key]
     {
         get => Values.TryGetValue(key, out var value) ? value : Variant.CreateFrom<string>(null);
-        set => Values[key] = value;
+        set
+        {
+            Values[key] = value;
+            EmitSignal(SignalName.OptionChanged, key, value);
+        }
     }
 
     public T Get<[MustBeVariant] T>(string key, T defaultValue = default)
@@ -38,7 +44,11 @@ public class OptionsData
             : defaultValue;
     }
 
-    public void Set(string key, Variant value) => Values[key] = value;
+    public void Set(string key, Variant value)
+    {
+        Values[key] = value;
+        EmitSignal(SignalName.OptionChanged, key, value);
+    }
 
     public static OptionsData CreateDefault()
     {

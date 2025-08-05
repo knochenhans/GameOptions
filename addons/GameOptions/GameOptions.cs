@@ -1,11 +1,27 @@
 using Godot;
 using Godot.Collections;
+using static Logger;
 
-public static class GameOptions
+public partial class GameOptions : Node
 {
     private const string SavePath = "user://options.json";
 
     public static OptionsData Current { get; private set; } = new OptionsData();
+
+    public static GameOptions Instance { get; private set; }
+
+    public override void _EnterTree()
+    {
+        // Singleton setup
+        if (Instance != null && Instance != this)
+        {
+            LogError("Duplicate GameOptions instance detected, destroying the new one.", "GameOptions", LogTypeEnum.Framework);
+            QueueFree();
+            return;
+        }
+
+        Instance = this;
+    }
 
     public static void Load()
     {
@@ -19,11 +35,11 @@ public static class GameOptions
         }
         else
         {
-            Logger.Log("No options file found, using defaults.", "GameOptions", Logger.LogTypeEnum.Framework);
+            Log("No options file found, using defaults.", "GameOptions", LogTypeEnum.Framework);
             Current = OptionsData.CreateDefault();
         }
 
-        Logger.Log("Game options loaded successfully.", "GameOptions", Logger.LogTypeEnum.Framework);
+        Log("Game options loaded successfully.", "GameOptions", LogTypeEnum.Framework);
     }
 
     public static void Save()
@@ -32,7 +48,7 @@ public static class GameOptions
         var jsonString = Json.Stringify(Current.Values, indent: "\t");
         file.StoreString(jsonString);
 
-        Logger.Log("Game options saved successfully.", "GameOptions", Logger.LogTypeEnum.Framework);
+        Log("Game options saved successfully.", "GameOptions", LogTypeEnum.Framework);
     }
 
     public static void ResetToDefault()
