@@ -16,14 +16,10 @@ public partial class OptionGrid : VBoxContainer
 
     [Export] public Array<string> OptionOrder = [];
 
-    UISoundPlayer UISoundPlayer;
-
     GridContainer GridContainer;
 
-    public void Init(UISoundPlayer UISoundPlayer)
+    public void Init()
     {
-        this.UISoundPlayer = UISoundPlayer;
-
         GridContainer = new GridContainer
         {
             Name = "GridContainer",
@@ -79,8 +75,8 @@ public partial class OptionGrid : VBoxContainer
 
     public override void _ExitTree() => Clear();
 
-    public void OnMousePressedItem(string key) => UISoundPlayer.PlaySound("click1");
-    public void OnMouseEnteredItem(string key) => UISoundPlayer.PlaySound("hover");
+    public void OnMousePressedItem(string key) => UISoundPlayer.Instance.PlaySound("click1");
+    public void OnMouseEnteredItem(string key) => UISoundPlayer.Instance.PlaySound("hover");
 
     public void DisableInput()
     {
