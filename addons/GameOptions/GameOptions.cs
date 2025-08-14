@@ -25,18 +25,19 @@ public partial class GameOptions : Node
 
     public static void Load()
     {
+        Current = OptionsData.CreateDefault();
+
         if (FileAccess.FileExists(SavePath))
         {
             using var file = FileAccess.Open(SavePath, FileAccess.ModeFlags.Read);
             var jsonString = file.GetAsText();
             var parsed = Json.ParseString(jsonString);
 
-            Current = new OptionsData((Dictionary)parsed);
+            Current.Update((Dictionary<string, Variant>)parsed);
         }
         else
         {
             Log("No options file found, using defaults.", "GameOptions", LogTypeEnum.Framework);
-            Current = OptionsData.CreateDefault();
         }
 
         Log("Game options loaded successfully.", "GameOptions", LogTypeEnum.Framework);

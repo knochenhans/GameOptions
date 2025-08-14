@@ -50,6 +50,15 @@ public partial class OptionsData : Resource
         EmitSignal(SignalName.OptionChanged, key, value);
     }
 
+    public void Update(Dictionary<string, Variant> dict)
+    {
+        foreach (var key in dict.Keys)
+        {
+            Values[key.ToString()] = dict[key];
+            EmitSignal(SignalName.OptionChanged, key.ToString(), dict[key]);
+        }
+    }
+
     public static OptionsData CreateDefault()
     {
         var data = new OptionsData();
