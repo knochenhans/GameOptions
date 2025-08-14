@@ -31,8 +31,8 @@ public static class MenuBuilder
                             Value = f,
                             Name = $"{key}Slider",
                             CustomMinimumSize = new Vector2(100, 0),
-                            SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
-                            SizeFlagsVertical = Control.SizeFlags.ExpandFill,
+                            SizeFlagsHorizontal = Control.SizeFlags.Fill,
+                            SizeFlagsVertical = Control.SizeFlags.Fill,
                         };
                         slider.ValueChanged += v => setValue(key, (float)v);
                         if (onMousePressed != null)
@@ -51,8 +51,8 @@ public static class MenuBuilder
                         Value = i,
                         Name = $"{key}SpinBox",
                         CustomMinimumSize = new Vector2(100, 0),
-                        SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
-                        SizeFlagsVertical = Control.SizeFlags.ExpandFill,
+                        SizeFlagsHorizontal = Control.SizeFlags.Fill,
+                        SizeFlagsVertical = Control.SizeFlags.Fill,
                     };
                     spinBox.ValueChanged += v => setValue(key, (int)v);
                     if (onMousePressed != null)
@@ -66,7 +66,9 @@ public static class MenuBuilder
                     var checkBox = new CheckBox
                     {
                         ButtonPressed = b,
-                        Name = $"{key}CheckBox"
+                        Name = $"{key}CheckBox",
+                        SizeFlagsHorizontal = Control.SizeFlags.ShrinkEnd,
+                        SizeFlagsVertical = Control.SizeFlags.ShrinkCenter,
                     };
                     checkBox.Toggled += pressed => setValue(key, pressed);
                     if (onMousePressed != null)
@@ -81,8 +83,8 @@ public static class MenuBuilder
                     {
                         Name = $"{key}DropDown",
                         CustomMinimumSize = new Vector2(100, 0),
-                        SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
-                        SizeFlagsVertical = Control.SizeFlags.ExpandFill,
+                        SizeFlagsHorizontal = Control.SizeFlags.Fill,
+                        SizeFlagsVertical = Control.SizeFlags.Fill,
                     };
 
                     for (int o = 0; o < dropDownOptions[key].Count; o++)
