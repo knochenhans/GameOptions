@@ -29,11 +29,16 @@ public partial class OptionGrid : VBoxContainer
 
         foreach (var key in OptionsMetadata.Keys)
         {
+            if (GameOptions.Current.Values.Count == 0)
+            {
+                Logger.LogError($"GameOptions is not initialized, is GameOptions node present in the main node?", "Options", Logger.LogTypeEnum.UI);
+                return;
+            }
+
             // Check if all metadata keys are actually present in the GameOptions
             if (!GameOptions.Current.Values.ContainsKey(key))
             {
                 Logger.LogError($"Option '{key}' is not defined in GameOptions.", "Options", Logger.LogTypeEnum.UI);
-                return;
             }
         }
 
