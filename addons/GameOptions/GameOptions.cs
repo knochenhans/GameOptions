@@ -21,6 +21,41 @@ public partial class GameOptions : Node
         }
 
         Instance = this;
+
+        Load();
+        Current.OptionChanged += OnGameOptionChanged;
+        ApplyGameOptions();
+    }
+
+    public void ApplyGameOptions()
+    {
+        AudioServer.SetBusVolumeLinear(AudioServer.GetBusIndex("Master"), Current.Get("master_volume", 100.0f));
+        AudioServer.SetBusVolumeLinear(AudioServer.GetBusIndex("Music"), Current.Get("music_volume", 100.0f));
+        AudioServer.SetBusVolumeLinear(AudioServer.GetBusIndex("SFX"), Current.Get("sfx_volume", 100.0f));
+        DisplayServer.WindowSetSize(Current.GetDropDown("resolution", new Vector2I(1920, 1080)));
+        DisplayServer.WindowSetMode(Current.Get("fullscreen", false) ? DisplayServer.WindowMode.ExclusiveFullscreen : DisplayServer.WindowMode.Windowed);
+    }
+
+    public void OnGameOptionChanged(string key, Variant value)
+    {
+        switch (key)
+        {
+            case "master_volume":
+                AudioServer.SetBusVolumeLinear(AudioServer.GetBusIndex("Master"), value.As<float>());
+                break;
+            case "music_volume":
+                AudioServer.SetBusVolumeLinear(AudioServer.GetBusIndex("Music"), value.As<float>());
+                break;
+            case "sfx_volume":
+                AudioServer.SetBusVolumeLinear(AudioServer.GetBusIndex("SFX"), value.As<float>());
+                break;
+            case "resolution":
+                DisplayServer.WindowSetSize(Current.GetDropDown("resolution", new Vector2I(1920, 1080)));
+                break;
+            case "fullscreen":
+                DisplayServer.WindowSetMode(value.As<bool>() ? DisplayServer.WindowMode.ExclusiveFullscreen : DisplayServer.WindowMode.Windowed);
+                break;
+        }
     }
 
     public static void Load()
@@ -55,5 +90,10 @@ public partial class GameOptions : Node
     public static void ResetToDefault()
     {
         Current = OptionsData.CreateDefault();
+    }
+
+    public override void _ExitTree()
+    {
+        Current.OptionChanged -= OnGameOptionChanged;
     }
 }
