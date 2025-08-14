@@ -11,8 +11,8 @@ public partial class OptionsData : Resource
     public virtual void InitializeDefaults()
     {
         Set("master_volume", 1.0f);
-        Set("music_volume", 0.8f);
-        Set("sfx_volume", 0.8f);
+        Set("music_volume", 1.0f);
+        Set("sfx_volume", 1.0f);
         Set("fullscreen", false);
         Set("resolution", 0); // Index of dropdown
     }
