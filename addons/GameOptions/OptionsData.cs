@@ -44,6 +44,20 @@ public partial class OptionsData : Resource
             : defaultValue;
     }
 
+    public int GetDropDownIndex(string key, int defaultValue = -1)
+    {
+        var returnValue = Get<Variant>(key, defaultValue);
+        return returnValue.As<int>();
+    }
+
+    public T GetDropDown<[MustBeVariant] T>(string key, T defaultValue = default)
+    {
+        var index = GetDropDownIndex(key);
+
+        Array<Variant> dropDownValues = GameOptionMetadata.DropDownValues.TryGetValue(key, out var dropDownValue) ? dropDownValue.As<Array<Variant>>() : [];
+        return (index >= 0 && index < dropDownValues.Count) ? dropDownValues[index].As<T>() : defaultValue;
+    }
+
     public void Set(string key, Variant value)
     {
         Values[key] = value;
