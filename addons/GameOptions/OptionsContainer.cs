@@ -2,7 +2,7 @@ using System.Linq;
 using Godot;
 using Godot.Collections;
 
-public partial class OptionGrid : VBoxContainer
+public partial class OptionsContainer : VBoxContainer
 {
     [Export]
     public Dictionary<string, OptionMetadata> OptionsMetadata = new()
@@ -10,6 +10,8 @@ public partial class OptionGrid : VBoxContainer
         { "master_volume", new OptionMetadata { DisplayName = "Master Volume", Min = 0.0f, Max = 1.0f, DisplayType = OptionDisplayType.Slider } },
         { "music_volume", new OptionMetadata { DisplayName = "Music Volume", Min = 0.0f, Max = 1.0f, DisplayType = OptionDisplayType.Slider } },
         { "sfx_volume", new OptionMetadata { DisplayName = "Sound Effects Volume", Min = 0.0f, Max = 1.0f, DisplayType = OptionDisplayType.Slider } },
+        { "music_enabled", new OptionMetadata { DisplayName = "Enable Music", DisplayType = OptionDisplayType.CheckBox } },
+        { "sfx_enabled", new OptionMetadata { DisplayName = "Enable Sound Effects", DisplayType = OptionDisplayType.CheckBox } },
         { "fullscreen", new OptionMetadata { DisplayName = "Fullscreen Mode", DisplayType = OptionDisplayType.CheckBox } },
         { "resolution", new OptionMetadata { DisplayName = "Resolution", DisplayType = OptionDisplayType.DropDown } }
     };
@@ -50,7 +52,7 @@ public partial class OptionGrid : VBoxContainer
 
         if (OptionOrder.Count != OptionsMetadata.Count)
         {
-            Logger.LogWarning("OptionOrder does not match OptionsMetadata count.", "Options", Logger.LogTypeEnum.UI);
+            Logger.LogWarning("OptionOrder does not match OptionsMetadata count. Add missing options to OptionOrder in OptionsContainer.", "Options", Logger.LogTypeEnum.UI);
             return;
         }
 
