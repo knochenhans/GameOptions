@@ -18,6 +18,8 @@ public static partial class GameOptionMetadata
         { "master_volume", OptionDisplayType.Slider },
         { "music_volume", OptionDisplayType.Slider },
         { "sfx_volume", OptionDisplayType.Slider },
+        { "music_enabled", OptionDisplayType.CheckBox },
+        { "sfx_enabled", OptionDisplayType.CheckBox },
         { "fullscreen", OptionDisplayType.CheckBox },
         { "resolution", OptionDisplayType.DropDown }
     };

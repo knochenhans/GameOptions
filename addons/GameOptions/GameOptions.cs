@@ -49,6 +49,12 @@ public partial class GameOptions : Node
             case "sfx_volume":
                 AudioServer.SetBusVolumeLinear(AudioServer.GetBusIndex("SFX"), value.As<float>());
                 break;
+            case "music_enabled":
+                AudioServer.SetBusMute(AudioServer.GetBusIndex("Music"), !value.As<bool>());
+                break;
+            case "sfx_enabled":
+                AudioServer.SetBusMute(AudioServer.GetBusIndex("SFX"), !value.As<bool>());
+                break;
             case "resolution":
                 DisplayServer.WindowSetSize(Current.GetDropDown("resolution", new Vector2I(1920, 1080)));
                 break;
