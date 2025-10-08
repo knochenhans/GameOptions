@@ -34,11 +34,13 @@ public partial class GameOptions : Node
 
     public void ApplyGameOptions()
     {
-        AudioServer.SetBusVolumeLinear(AudioServer.GetBusIndex("Master"), Current.Get("master_volume", 100.0f));
-        AudioServer.SetBusVolumeLinear(AudioServer.GetBusIndex("Music"), Current.Get("music_volume", 100.0f));
-        AudioServer.SetBusVolumeLinear(AudioServer.GetBusIndex("SFX"), Current.Get("sfx_volume", 100.0f));
-        DisplayServer.WindowSetSize(Current.GetDropDown("resolution", new Vector2I(1920, 1080)));
-        DisplayServer.WindowSetMode(Current.Get("fullscreen", false) ? DisplayServer.WindowMode.ExclusiveFullscreen : DisplayServer.WindowMode.Windowed);
+        OnGameOptionChanged("master_volume", Current.Get("master_volume", 100.0f));
+        OnGameOptionChanged("music_volume", Current.Get("music_volume", 100.0f));
+        OnGameOptionChanged("sfx_volume", Current.Get("sfx_volume", 100.0f));
+        OnGameOptionChanged("music_enabled", Current.Get("music_enabled", true));
+        OnGameOptionChanged("sfx_enabled", Current.Get("sfx_enabled", true));
+        OnGameOptionChanged("resolution", Current.GetDropDown("resolution", new Vector2I(1920, 1080)));
+        OnGameOptionChanged("fullscreen", Current.Get("fullscreen", false));
     }
 
     public void OnGameOptionChanged(string key, Variant value)
