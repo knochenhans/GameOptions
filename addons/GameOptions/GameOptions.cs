@@ -22,6 +22,11 @@ public partial class GameOptions : Node
 
         Instance = this;
 
+        if (AudioServer.GetBusIndex("Music") == -1)
+            LogError("Audio bus 'Music' not found!", "GameOptions", LogTypeEnum.Audio);
+        if (AudioServer.GetBusIndex("SFX") == -1)
+            LogError("Audio bus 'SFX' not found!", "GameOptions", LogTypeEnum.Audio);
+
         Load();
         Current.OptionChanged += OnGameOptionChanged;
         ApplyGameOptions();
