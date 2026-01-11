@@ -35,6 +35,10 @@ public partial class GameOptions : Node
         ApplyGameOptions();
     }
 
+    public override void _ExitTree()
+    {
+        Current.OptionChanged -= OnGameOptionChanged;
+    }
     #endregion
 
     #region [Main Logic]
