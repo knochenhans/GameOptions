@@ -8,7 +8,8 @@ public partial class GameOptions : Node
     #region [Fields and Properties]
     private const string SavePath = "user://options.json";
 
-    public static OptionsData Current { get; private set; } = new OptionsData();
+    public static OptionsData Current = new();
+    public static GameOptions Instance;
 
     #endregion
 
@@ -48,13 +49,13 @@ public partial class GameOptions : Node
         ApplyAudioOptions();
     }
 
-    public void ApplyDisplayOptions()
+    public static void ApplyDisplayOptions()
     {
         OnGameOptionChanged("resolution", Current.GetDropDown("resolution", new Vector2I(1920, 1080)));
         OnGameOptionChanged("fullscreen", Current.Get("fullscreen", false));
     }
 
-    public void ApplyAudioOptions()
+    public static void ApplyAudioOptions()
     {
         OnGameOptionChanged("master_volume", Current.Get("master_volume", 100.0f));
         OnGameOptionChanged("music_volume", Current.Get("music_volume", 100.0f));
@@ -65,6 +66,7 @@ public partial class GameOptions : Node
     #endregion
 
     #region [Events]
+    public static void OnGameOptionChanged(string key, Variant value)
     {
         switch (key)
         {

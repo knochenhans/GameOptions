@@ -83,8 +83,8 @@ public partial class OptionsContainer : VBoxContainer
 
     public override void _ExitTree() => Clear();
 
-    public void OnMousePressedItem(string key) => UISoundPlayer.Instance.PlaySound("click1");
-    public void OnMouseEnteredItem(string key) => UISoundPlayer.Instance.PlaySound("hover");
+    public static void OnMousePressedItem(string key) => UISoundPlayer.Instance.PlaySound("click1");
+    public static void OnMouseEnteredItem(string key) => UISoundPlayer.Instance.PlaySound("hover");
 
     public void DisableInput()
     {
