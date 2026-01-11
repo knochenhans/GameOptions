@@ -1,15 +1,18 @@
 using Godot;
 using Godot.Collections;
+
 using static Logger;
 
 public partial class GameOptions : Node
 {
+    #region [Fields and Properties]
     private const string SavePath = "user://options.json";
 
     public static OptionsData Current { get; private set; } = new OptionsData();
 
-    public static GameOptions Instance { get; private set; }
+    #endregion
 
+    #region [Godot]
     public override void _EnterTree()
     {
         // Singleton setup
@@ -32,6 +35,9 @@ public partial class GameOptions : Node
         ApplyGameOptions();
     }
 
+    #endregion
+
+    #region [Main Logic]
     public void ApplyGameOptions()
     {
         ApplyDisplayOptions();
@@ -52,8 +58,9 @@ public partial class GameOptions : Node
         OnGameOptionChanged("music_enabled", Current.Get("music_enabled", true));
         OnGameOptionChanged("sfx_enabled", Current.Get("sfx_enabled", true));
     }
+    #endregion
 
-    public void OnGameOptionChanged(string key, Variant value)
+    #region [Events]
     {
         switch (key)
         {
@@ -80,7 +87,9 @@ public partial class GameOptions : Node
                 break;
         }
     }
+    #endregion
 
+    #region [Saving and Loading]
     public static void Load()
     {
         Current = OptionsData.CreateDefault();
@@ -109,14 +118,12 @@ public partial class GameOptions : Node
 
         Log("Game options saved successfully.", "GameOptions", LogTypeEnum.Framework);
     }
+    #endregion
 
+    #region [Utility]
     public static void ResetToDefault()
     {
         Current = OptionsData.CreateDefault();
     }
-
-    public override void _ExitTree()
-    {
-        Current.OptionChanged -= OnGameOptionChanged;
-    }
+    #endregion
 }

@@ -1,4 +1,5 @@
 using System.Linq;
+
 using Godot;
 using Godot.Collections;
 
@@ -33,7 +34,7 @@ public partial class OptionsContainer : VBoxContainer
         {
             if (GameOptions.Current.Values.Count == 0)
             {
-                Logger.LogError($"GameOptions is not initialized, is GameOptions node present in the main node?", "Options", Logger.LogTypeEnum.UI);
+                Logger.LogError("GameOptions is not initialized, is GameOptions node present in the main node?", "Options", Logger.LogTypeEnum.UI);
                 return;
             }
 
@@ -88,7 +89,9 @@ public partial class OptionsContainer : VBoxContainer
     public void DisableInput()
     {
         foreach (Node child in GridContainer.GetChildren())
+        {
             if (child is Control control)
                 control.SetBlockSignals(true);
+        }
     }
 }
