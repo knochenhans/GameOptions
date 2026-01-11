@@ -11,6 +11,7 @@ public partial class GameOptions : Node
     public static OptionsData Current = new();
     public static GameOptions Instance;
 
+    public static Window Window;
     #endregion
 
     #region [Godot]
@@ -25,6 +26,8 @@ public partial class GameOptions : Node
         }
 
         Instance = this;
+
+        Window = GetWindow();
 
         if (AudioServer.GetBusIndex("Music") == -1)
             LogError("Audio bus 'Music' not found!", "GameOptions", LogTypeEnum.Audio);
@@ -86,10 +89,15 @@ public partial class GameOptions : Node
                 AudioServer.SetBusMute(AudioServer.GetBusIndex("SFX"), !value.As<bool>());
                 break;
             case "resolution":
-                DisplayServer.WindowSetSize(Current.GetDropDown("resolution", new Vector2I(1920, 1080)));
+                // DisplayServer.WindowSetSize(Current.GetDropDown("resolution", new Vector2I(1920, 1080)));
+                Window.Size = Current.GetDropDown("resolution", new Vector2I(1920, 1080));
                 break;
             case "fullscreen":
-                DisplayServer.WindowSetMode(value.As<bool>() ? DisplayServer.WindowMode.ExclusiveFullscreen : DisplayServer.WindowMode.Windowed);
+                // DisplayServer.WindowSetMode(value.As<bool>() ? DisplayServer.WindowMode.ExclusiveFullscreen : DisplayServer.WindowMode.Windowed);
+                Window.Mode = value.As<bool>() ? Window.ModeEnum.ExclusiveFullscreen : Window.ModeEnum.Windowed;
+
+                if (value.As<bool>())
+                    Window.Size = DisplayServer.ScreenGetSize();
                 break;
         }
     }
