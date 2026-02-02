@@ -15,7 +15,7 @@ public partial class OptionsData : Resource
         Set("sfx_volume", 1.0f);
         Set("music_enabled", true);
         Set("sfx_enabled", true);
-        Set("fullscreen", false);
+        Set("fullscreen", true);
         Set("resolution", 0); // Index of dropdown
     }
 
